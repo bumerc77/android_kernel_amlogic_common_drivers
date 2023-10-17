@@ -656,6 +656,7 @@ ssize_t efuse_user_attr_read(char *name, char *buf)
 exit:
 	return ret;
 }
+EXPORT_SYMBOL(efuse_user_attr_read);
 
 #ifndef CONFIG_ARCH_MESON_ODROID_COMMON
 static ssize_t userdata_show(struct class *cla,
