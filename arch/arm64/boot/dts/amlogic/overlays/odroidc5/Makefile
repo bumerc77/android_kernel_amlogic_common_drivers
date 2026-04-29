@@ -1,8 +1,11 @@
 # dtb-y += overlay.dtbo
 
-dtb-y += display-timings.dtbo \
-         dht11.dtbo \
+dtb-y += dht11.dtbo \
+         display-timings.dtbo \
+         display_vu5.dtbo \
+         display_vu7.dtbo \
          display_vu7c.dtbo \
+         display_vu7plus.dtbo \
          gpio_power_button.dtbo \
          hktft32.dtbo \
          i2c0.dtbo \
