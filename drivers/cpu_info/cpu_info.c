@@ -61,8 +61,6 @@ unsigned char get_meson_cpu_version(int level)
 }
 EXPORT_SYMBOL(get_meson_cpu_version);
 
-extern const char *machine_model;
-
 void cpuinfo_get_chipid(unsigned char *cid, unsigned int size)
 {
 	if (!init_done) {
@@ -84,7 +82,7 @@ static int cpu_chipid_show(struct seq_file *m, void *arg)
 	for (i = 0; i < CHIPID_LEN; i++)
 		seq_printf(m, "%02x", cpuinfo_chip_id[i]);
 	seq_puts(m, "\n");
-	seq_printf(m, "Hardware:\t %s\n", machine_model);
+	seq_printf(m, "Hardware:\t %s\n", "Amlogic");
 
 	return 0;
 }
