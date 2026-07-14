@@ -1,0 +1,94 @@
+From 0aa6bc30ee974b45626e078f3b0219204b82f0f7 Mon Sep 17 00:00:00 2001
+From: Jiucheng Xu <jiucheng.xu@amlogic.com>
+Date: Sun, 28 Apr 2024 17:49:01 +0800
+Subject: [PATCH] incfs: workaround for invalid offset from wrong file srouce
+ [1/1]
+
+Change-Id: I6a2b1e5bb281210805e73a7293d65b4bc61442d2
+Signed-off-by: Jiucheng Xu <jiucheng.xu@amlogic.com>
+---
+ fs/incfs/data_mgmt.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
+
+diff --git a/fs/incfs/data_mgmt.c b/fs/incfs/data_mgmt.c
+index 5abb20a1098c..cdb07bc1a172 100644
+--- a/fs/incfs/data_mgmt.c
++++ b/fs/incfs/data_mgmt.c
+@@ -799,6 +799,15 @@ static bool is_data_block_present(struct data_file_block *block)
+ 	       (block->db_stored_size != 0);
+ }
+ 
++static bool is_pos_valid(struct data_file *df, struct data_file_block *dfb)
++{
++	struct file *f = df->df_backing_file_context->bc_file;
++	loff_t size = f->f_inode->i_size;
++	loff_t pos = dfb->db_backing_file_data_offset;
++
++	return pos < size;
++}
++
+ static void convert_data_file_block(struct incfs_blockmap_entry *bme,
+ 				    struct data_file_block *res_block)
+ {
+@@ -939,14 +948,16 @@ int incfs_get_filled_blocks(struct data_file *df,
+ 
+ 		convert_data_file_block(bme + i, &dfb);
+ 
+-		if (is_data_block_present(&dfb)) {
++		if (is_data_block_present(&dfb) &&
++		    is_pos_valid(df, &dfb)) {
+ 			if (arg->index_out >= df->df_data_block_count)
+ 				++hash_blocks_filled;
+ 			else
+ 				++data_blocks_filled;
+ 		}
+ 
+-		if (is_data_block_present(&dfb) == in_range)
++		if (is_data_block_present(&dfb) == in_range &&
++		    is_pos_valid(df, &dfb))
+ 			continue;
+ 
+ 		if (!in_range) {
+@@ -1144,7 +1155,8 @@ static int wait_for_data_block(struct data_file *df, int block_index,
+ 		return error;
+ 
+ 	/* If the block was found, just return it. No need to wait. */
+-	if (is_data_block_present(&block)) {
++	if (is_data_block_present(&block) &&
++	    is_pos_valid(df, &block)) {
+ 		*res_block = block;
+ 		if (timeouts && timeouts->min_time_us) {
+ 			*delayed_min_us = timeouts->min_time_us;
+@@ -1208,7 +1220,8 @@ static int wait_for_data_block(struct data_file *df, int block_index,
+ 	 */
+ 	error = get_data_file_block(df, block_index, &block);
+ 	if (!error) {
+-		if (is_data_block_present(&block))
++		if (is_data_block_present(&block) &&
++		    is_pos_valid(df, &block))
+ 			*res_block = block;
+ 		else {
+ 			/*
+@@ -1402,7 +1415,8 @@ int incfs_process_new_data_block(struct data_file *df,
+ 
+ 	if (error)
+ 		return error;
+-	if (is_data_block_present(&existing_block))
++	if (is_data_block_present(&existing_block) &&
++	    is_pos_valid(df, &existing_block))
+ 		/* Block is already present, nothing to do here */
+ 		return 0;
+ 
+@@ -1415,7 +1429,8 @@ int incfs_process_new_data_block(struct data_file *df,
+ 	if (error)
+ 		goto out_up_write;
+ 
+-	if (is_data_block_present(&existing_block))
++	if (is_data_block_present(&existing_block) &&
++	    is_pos_valid(df, &existing_block))
+ 		goto out_up_write;
+ 
+ 	error = mutex_lock_interruptible(&bfc->bc_mutex);
+-- 
+2.43.2
+
