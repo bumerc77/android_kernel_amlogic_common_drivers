@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: GPL-2.0
 
-KBUILD_CFLAGS += -Wlarger-than=32768
-#KBUILD_CFLAGS += -Wstack-usage=1856
-KBUILD_CFLAGS += -Wno-error=stringop-overread
+ccflags-y += -Wlarger-than=32768
+#ccflags-y += -Wstack-usage=1856
+ccflags-y += $(call cc-disable-warning,stringop-overread)
 
 # Amlogic
 MODULE_NAME_DUMMY = amlogic-snd-codec-dummy

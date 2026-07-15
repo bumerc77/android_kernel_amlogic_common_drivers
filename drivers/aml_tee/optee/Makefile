@@ -11,4 +11,4 @@ optee-objs += ffa_abi.o
 optee-objs += log.o
 
 # for tracing framework to find optee_trace.h
-CFLAGS_smc_abi.o := -I$(src)
+CFLAGS_smc_abi.o := -I$(src) -I$(srctree)/$(src)

@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-2.0
+
+load("//build/kernel/kleaf:kernel.bzl", "kernel_dtstree")
+
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "common_drivers_srcs",
+    srcs = glob(
+        ["**"],
+        exclude = [
+            "BUILD.bazel",
+            "**/*.bzl",
+            ".git/**",
+        ],
+    ),
+)
+
+kernel_dtstree(
+    name = "common_drivers_dtstree",
+    makefile = "arch/arm64/boot/dts/Makefile",
+)
