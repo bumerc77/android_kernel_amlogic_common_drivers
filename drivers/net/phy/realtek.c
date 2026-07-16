@@ -525,6 +525,12 @@ int rtl8211f_resume(struct phy_device *phydev)
 	}
 	return 0;
 }
+
+void realtek_enable_wol(int enable, bool suspend)
+{
+	support_gpio_wol = enable & 0x01;
+}
+EXPORT_SYMBOL(realtek_enable_wol);
 #endif
 
 static int rtl8211e_config_init(struct phy_device *phydev)
