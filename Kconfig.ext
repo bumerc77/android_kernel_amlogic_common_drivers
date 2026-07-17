@@ -2,4 +2,3 @@
 
 source "$(KCONFIG_EXT_PREFIX)drivers/Kconfig"
 source "$(KCONFIG_EXT_PREFIX)sound/Kconfig"
-source "$(KCONFIG_EXT_PREFIX)project/Kconfig.ext_modules"
