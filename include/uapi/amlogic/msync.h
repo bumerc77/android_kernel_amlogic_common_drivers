@@ -169,6 +169,8 @@ struct ker_start_policy {
 /* For debuging */
 #define AMSYNCS_IOC_GET_DEBUG_MODE	_IOR((_A_M_SS), 0x100, struct session_debug)
 
+#ifdef __KERNEL__
 int msync_vsync_update(void);
+#endif
 
 #endif
