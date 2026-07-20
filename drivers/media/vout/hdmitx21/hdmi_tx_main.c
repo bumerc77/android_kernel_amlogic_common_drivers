@@ -3757,7 +3757,9 @@ static ssize_t not_restart_hdcp_store(struct device *dev,
 	return count;
 }
 
+#ifdef CONFIG_ARCH_MESON_ODROID_COMMON
 static DEVICE_ATTR_WO(force_hpd);
+#endif
 static DEVICE_ATTR_RW(disp_mode);
 static DEVICE_ATTR_RW(vid_mute);
 static DEVICE_ATTR_WO(config);
@@ -4863,7 +4865,9 @@ static int amhdmitx_probe(struct platform_device *pdev)
 		return r;
 	}
 	hdev->hdtx_dev = dev;
+#ifdef CONFIG_ARCH_MESON_ODROID_COMMON
 	ret = device_create_file(dev, &dev_attr_force_hpd);
+#endif
 	ret = device_create_file(dev, &dev_attr_disp_mode);
 	ret = device_create_file(dev, &dev_attr_vid_mute);
 	ret = device_create_file(dev, &dev_attr_config);
@@ -5088,7 +5092,9 @@ static int amhdmitx_remove(struct platform_device *pdev)
 #endif
 
 	/* Remove the cdev */
+#ifdef CONFIG_ARCH_MESON_ODROID_COMMON
 	device_remove_file(dev, &dev_attr_force_hpd);
+#endif
 	device_remove_file(dev, &dev_attr_disp_mode);
 	device_remove_file(dev, &dev_attr_vid_mute);
 	device_remove_file(dev, &dev_attr_config);
