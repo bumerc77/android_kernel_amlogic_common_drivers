@@ -47,9 +47,9 @@ CONFIG_AMLOGIC_AUDIO_UTILS=m
 
 # amlogic-snd-codec
 CONFIG_AMLOGIC_SND_SOC_CODECS=y
-amlogic-snd-codec-dummy.ko
+# amlogic-snd-codec-dummy.ko
 CONFIG_AMLOGIC_SND_CODEC_DUMMY_CODEC=m
-amlogic-snd-codec-t9015.ko
+# amlogic-snd-codec-t9015.ko
 CONFIG_AMLOGIC_SND_CODEC_AMLT9015=m
 #snd-soc-AD82128.ko
 CONFIG_AMLOGIC_SND_SOC_AD82128=m
