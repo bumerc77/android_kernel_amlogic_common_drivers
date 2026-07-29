@@ -1179,13 +1179,28 @@ EXPORT_SYMBOL(aml_wifi_chip);
 
 void extern_wifi_set_enable(int is_on)
 {
+	/*
+	 * The SDIO buildin dhd driver powers WiFi directly through
+	 * set_wifi_power() here instead of set_usb_wifi_power(), so the
+	 * BT/WiFi coexistence refcount (usb_power) never learns that WiFi
+	 * is up. Without WIFI_BIT set, a later BT power on/off finds
+	 * usb_power==0 and cycles the shared chip power (WL_REG_ON) plus
+	 * runs sdio_reinit() underneath the live WiFi bus -- flooding the
+	 * log with CMD52 TIMEOUT / SLEEPCSR(0x1000e) write -110 and
+	 * wedging the SDIO bus for ~12s on first boot. Keep WIFI_BIT in
+	 * sync so BT's usb_power_control() takes the no-op msleep branch.
+	 */
+	mutex_lock(&wifi_bt_mutex);
 	if (is_on) {
 		set_wifi_power(1);
+		usb_power |= (1 << WIFI_BIT);
 		WIFI_INFO("WIFI  Enable! %d\n", wifi_info.power_on_pin);
 	} else {
 		set_wifi_power(0);
+		usb_power &= ~(1 << WIFI_BIT);
 		WIFI_INFO("WIFI  Disable! %d\n", wifi_info.power_on_pin);
 	}
+	mutex_unlock(&wifi_bt_mutex);
 }
 EXPORT_SYMBOL(extern_wifi_set_enable);
 

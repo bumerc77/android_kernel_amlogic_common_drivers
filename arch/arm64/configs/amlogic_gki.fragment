@@ -276,6 +276,10 @@ CONFIG_AMLOGIC_PINCTRL_MESON=y
 CONFIG_AMLOGIC_WIRELESS=m
 CONFIG_AMLOGIC_WIFI=y
 CONFIG_AMLOGIC_BLUETOOTH=y
+# Skip the redundant boot-time BT rfkill "off" (dedup in bt_set_block).
+# Without this, toggling BT reset during WiFi's first bring-up wedges the
+# shared AP6256 SDIO bus (CMD52 TIMEOUT / KSO SLEEPCSR write -110).
+CONFIG_AMLOGIC_RFKILL_INIT_SW_UNBLOCK=y
 CONFIG_AMLOGIC_PWM_32K=y
 
 # amlogic-input-gpiokey.ko
