@@ -3036,8 +3036,8 @@ static void cec_get_wk_msg(void)
 
 	memset(cec_dev->cec_wk_as_msg, 0, sizeof(cec_dev->cec_wk_as_msg));
 	aml_mbox_transfer_data(mbox_chan, MBOX_CMD_GET_CEC_AS_MSG,
-				  NULL, 0, cec_dev->ec_wk_as_msg,
-				  sizeof(cec_dev->ec_wk_as_msg), MBOX_SYNC);
+				  NULL, 0, cec_dev->cec_wk_as_msg,
+				  sizeof(cec_dev->cec_wk_as_msg), MBOX_SYNC);
 	CEC_INFO("cec_wk_as_msg len: %x\n", cec_dev->cec_wk_as_msg[0]);
 	for (i = 0; i < cec_dev->cec_wk_as_msg[0]; i++)
 		CEC_INFO("cec_wk_as_msg[%d] %02x\n", i,
