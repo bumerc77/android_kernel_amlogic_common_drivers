@@ -565,7 +565,7 @@ static inline int dim_module_init(void)
 }
 #endif
 
-#ifdef CONFIG_AMLOGIC_AO_CEC
+#if defined(CONFIG_AMLOGIC_LINUX_STD_CEC) || defined(CONFIG_AMLOGIC_AO_CEC)
 int cec_init(void);
 #else
 static int cec_init(void)
