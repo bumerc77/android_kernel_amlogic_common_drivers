@@ -988,7 +988,7 @@ static ssize_t port_num_show(struct class *cla,
 static ssize_t dump_reg_show(struct class *cla,
 			     struct class_attribute *attr, char *b)
 {
-	return dump_cecrx_reg(b);
+	return dump_cec_reg(b);
 }
 
 static ssize_t arc_port_show(struct class *cla,
@@ -1367,7 +1367,7 @@ static ssize_t dbg_store(struct class *cla, struct class_attribute *attr,
 	} else if (token && strncmp(token, "dump", 4) == 0) {
 		token = kmalloc(2048, GFP_KERNEL);
 		if (token) {
-			dump_cecrx_reg(token);
+			dump_cec_reg(token);
 			CEC_ERR("%s\n", token);
 			kfree(token);
 		}
