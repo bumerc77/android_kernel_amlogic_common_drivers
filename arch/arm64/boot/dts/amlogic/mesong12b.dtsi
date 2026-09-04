@@ -1025,6 +1025,7 @@
 		protocol = <REMOTE_TYPE_NEC>;
 		interrupts = <GIC_SPI 196 IRQ_TYPE_EDGE_RISING>;
 		map = <&custom_maps>;
+		wakeup_map = <&ir_wakeup_key>;
 		max_frame_time = <200>;
 	};
 
