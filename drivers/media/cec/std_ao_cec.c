@@ -3019,7 +3019,7 @@ static void cec_get_wk_msg(void)
 	int i = 0;
 
 	memset(cec_dev->cec_wk_otp_msg, 0, sizeof(cec_dev->cec_wk_otp_msg));
-	aml_mbox_transfer_data(mbox_chan, MBOX_CMD_GET_CEC_OTP_MSG,
+	aml_mbox_transfer_data(cec_mbox_chan, MBOX_CMD_GET_CEC_OTP_MSG,
 				  NULL, 0, cec_dev->cec_wk_otp_msg,
 				  sizeof(cec_dev->cec_wk_otp_msg), MBOX_SYNC);
 	CEC_INFO("cec_wk_otp_msg len: %x\n", cec_dev->cec_wk_otp_msg[0]);
@@ -3035,7 +3035,7 @@ static void cec_get_wk_msg(void)
 	}
 
 	memset(cec_dev->cec_wk_as_msg, 0, sizeof(cec_dev->cec_wk_as_msg));
-	aml_mbox_transfer_data(mbox_chan, MBOX_CMD_GET_CEC_AS_MSG,
+	aml_mbox_transfer_data(cec_mbox_chan, MBOX_CMD_GET_CEC_AS_MSG,
 				  NULL, 0, cec_dev->cec_wk_as_msg,
 				  sizeof(cec_dev->cec_wk_as_msg), MBOX_SYNC);
 	CEC_INFO("cec_wk_as_msg len: %x\n", cec_dev->cec_wk_as_msg[0]);
