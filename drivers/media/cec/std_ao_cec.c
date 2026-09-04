@@ -103,6 +103,7 @@ static struct st_ao_cec std_ao_cec;
 
 static void cec_store_msg_to_buff(unsigned char len, unsigned char *msg);
 static void cec_new_msg_push(void);
+struct mbox_chan *cec_mbox_chan;
 
 #if (defined(CONFIG_AMLOGIC_HDMITX) || defined(CONFIG_AMLOGIC_HDMITX21))
 static int hdmitx_notify_callback(struct notifier_block *block,
